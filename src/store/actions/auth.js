@@ -3,8 +3,7 @@ import axios from 'axios';
 
 export const authStart = () => {
     return {
-        type: actionTypes.AUTH_START,
-        empty: null
+        type: actionTypes.AUTH_START
     }
 }
 
@@ -20,6 +19,20 @@ export const authFail = (error) => {
     return {
         type: actionTypes.AUTH_FAIL,
         error: error
+    }
+}
+
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() => {
+            dispatch(logout()) // logout is called one expirationTime is done
+        }, expirationTime * 1000) // multiply by 1000 to turn your milli seconds to real seconds
     }
 }
 
@@ -39,10 +52,11 @@ export const auth = (email, password, isSignUp) => {
            .then(response => {
                console.log(response);
                dispatch(authSuccess(response.data.idToken, response.data.localId));
+               dispatch(checkAuthTimeout(response.data.expiresIn));
            }) 
            .catch(err => {
                console.log(err)
-               dispatch(authFail(err));
+               dispatch(authFail(err.response.data.error));
            });
     }
 }

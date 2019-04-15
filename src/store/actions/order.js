@@ -22,10 +22,10 @@ export const purchaseBurgerStart = () => {
     }
 }
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseBurgerStart());
-        axios.post('/order.json', orderData).then(response => {
+        axios.post('/order.json?auth=' + token, orderData).then(response => {
             console.log(response.data);
             dispatch(purchaseBurgerSuccess(response.data.name, orderData));
         }).catch(error => {
@@ -60,10 +60,10 @@ export const fetchOrdersStart = () => {
     }
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get('/order.json').then(res => {
+        axios.get('/order.json?auth=' + token).then(res => {
             const fetchedOrders = [];
             // Loop thru obj and distribute new obj with initial key as id
             for (let key in res.data) {
