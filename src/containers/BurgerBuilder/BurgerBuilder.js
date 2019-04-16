@@ -25,43 +25,13 @@ class BurgerBuilder extends Component {
         return sum > 0;
     }
 
-    // addIngredientHandler = (type) => {
-    //     const oldCount = this.state.ingredients[type];
-    //     const updatedCount = oldCount + 1;
-    //     // Create an obj and spill out old state cuase state is immutable
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     };
-    //     updatedIngredients[type] = updatedCount;
-    //     // To update price 
-    //     const priceAddition = INGREDIENT_PRICES[type];
-    //     const oldPrice = this.state.totalPrice;
-    //     const newPrice = oldPrice + priceAddition;
-
-    //     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
-    //     this.updatePurchaseState(updatedIngredients);
-    // }
-
-    // removeIngredientHandler = (type) => {
-    //     const oldAmount = this.state.ingredients[type];
-    //     if(oldAmount <= 0) {
-    //         return;
-    //     }
-    //     const currentAmount = oldAmount - 1;
-    //     const updatedIngredients = {
-    //         ...this.state.ingredients
-    //     }
-    //         updatedIngredients[type] = currentAmount;
-
-    //     // To update price
-    //     const currentIngPrice = INGREDIENT_PRICES[type];
-    //     const currentTotalPrice = this.state.totalPrice - currentIngPrice;
-    //     this.setState({ingredients: updatedIngredients, totalPrice: currentTotalPrice});
-    //     this.updatePurchaseState(updatedIngredients);
-    // }
-
     purchaseHandler = () => {
-        this.setState({purchasing: true})
+        if(this.props.isAuthenticated) {
+            this.setState({purchasing: true})
+        } else {
+            this.props.onSetAuthRedirectPath('/checkout');
+            this.props.history.push('/auth');
+        }
     }
 
     purchaseCancelHandler = () => {
@@ -103,6 +73,7 @@ class BurgerBuilder extends Component {
                     price={this.props.price}
                     purchaseable={this.updatePurchaseState(this.props.ings)}
                     ordered={this.purchaseHandler}
+                    isAuth={this.props.isAuthenticated}
                     />
                 </Aux>
             );
@@ -132,7 +103,8 @@ const mapStateToProps = state => {
     return {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
-        error: state.burgerBuilder.error 
+        error: state.burgerBuilder.error,
+        isAuthenticated: state.auth.token !== null,
     }
 }
 
@@ -141,7 +113,8 @@ const mapDispatchToProps = dispatch => {
         onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
         onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
-        onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit())
+        onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit()),
+        onSetAuthRedirectPath: (path) => dispatch(burgerBuilderActions.setAuthRedirectPath(path))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

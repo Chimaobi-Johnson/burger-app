@@ -60,10 +60,11 @@ export const fetchOrdersStart = () => {
     }
 }
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get('/order.json?auth=' + token).then(res => {
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/order.json' + queryParams).then(res => {
             const fetchedOrders = [];
             // Loop thru obj and distribute new obj with initial key as id
             for (let key in res.data) {
