@@ -6,7 +6,8 @@ export {
 export {
     purchaseBurger,
     purchaseInit,
-    fetchOrders
+    fetchOrders,
+    closePurchaseSuccessModal
  } from './order';
  export {
      auth,

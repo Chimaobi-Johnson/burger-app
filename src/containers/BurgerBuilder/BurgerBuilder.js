@@ -43,6 +43,10 @@ class BurgerBuilder extends Component {
         this.props.history.push('/checkout');
     }
 
+    closePurchaseSuccessModal = () => {
+        this.props.onClosePurchaseSuccessModal();
+    }
+
     componentDidMount() {
         this.props.onInitIngredients();
         // axios.get('https://react-burger-app-fa446.firebaseio.com/ingredients.json').then(response => {
@@ -90,6 +94,7 @@ class BurgerBuilder extends Component {
         // }
         return (
             <Aux>
+                <Modal show={this.props.purchaseSuccess} modalClosed={this.closePurchaseSuccessModal}>Burger Purchased Successfully</Modal>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
                     {orderSummary}
                 </Modal>
@@ -105,6 +110,7 @@ const mapStateToProps = state => {
         price: state.burgerBuilder.totalPrice,
         error: state.burgerBuilder.error,
         isAuthenticated: state.auth.token !== null,
+        purchaseSuccess: state.order.purchaseSuccess
     }
 }
 
@@ -114,7 +120,8 @@ const mapDispatchToProps = dispatch => {
         onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
         onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
         onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit()),
-        onSetAuthRedirectPath: (path) => dispatch(burgerBuilderActions.setAuthRedirectPath(path))
+        onSetAuthRedirectPath: (path) => dispatch(burgerBuilderActions.setAuthRedirectPath(path)),
+        onClosePurchaseSuccessModal: () => dispatch(burgerBuilderActions.closePurchaseSuccessModal())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));

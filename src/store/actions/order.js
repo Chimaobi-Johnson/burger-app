@@ -5,7 +5,8 @@ export const purchaseBurgerSuccess = (id, orderData) => {
     return {
         type: actionTypes.PURCHASE_BURGER_SUCCESS,
         orderId: id,
-        orderData: orderData 
+        orderData: orderData,
+        purchaseSuccess: true
     }
 }
 
@@ -22,10 +23,15 @@ export const purchaseBurgerStart = () => {
     }
 }
 
+export const closePurchaseSuccessModal = () => {
+    return {
+        type: actionTypes.CLOSE_PURCHASE_SUCCESS_MODAL
+    }
+}
+
 export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseBurgerStart());
-        console.log(orderData);
         axios.post('/order.json?auth=' + token, orderData).then(response => {
             dispatch(purchaseBurgerSuccess(response.data.name, orderData));
         }).catch(error => {

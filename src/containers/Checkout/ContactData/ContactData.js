@@ -7,7 +7,6 @@ import Input from '../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/index';
-// import Aux from '../../../hoc/Auxillary/Auxillary';
 
 class ContactData extends Component {
     state = {
@@ -22,7 +21,7 @@ class ContactData extends Component {
                 validation: {
                     required: true,
                     minLength: 3,
-                    maxLength: 15
+                    maxLength: 155
                 },
                 inputError: {
                     isEmpty: false,
@@ -41,7 +40,7 @@ class ContactData extends Component {
                 value: '',
                 validation: {
                     required: true,
-                    minLength: 5,
+                    minLength: 3,
                     maxLength: 255
                 },
                 inputError: {
@@ -82,7 +81,7 @@ class ContactData extends Component {
                 validation: {
                     required: true,
                     minLength: 3,
-                    maxLength: 22
+                    maxLength: 32
                 },
                 inputError: {
                     isEmpty: false,
@@ -102,7 +101,7 @@ class ContactData extends Component {
                 validation: {
                     required: true,
                     minLength: 3,
-                    maxLength: 50
+                    maxLength: 100
                 },
                 inputError: {
                     isEmpty: false,
@@ -156,19 +155,7 @@ class ContactData extends Component {
         //  let formError = [];
         if(rules.required) {
             isValid = value.trim() !== '' && isValid
-            // if(value === '') {
-            //     formError.push({
-            //         isEmpty: 'Sorry this field cannot be empty'
-            //     })
-            //     this.setState({formErrors: formError})
-            // }
         }
-        // if(rules.minLength) {
-        //     isValid = value.length >= rules.minLength && isValid
-        // }
-        // if(rules.maxLength) {
-        //     isValid = value.length <= rules.maxLength && isValid
-        // }
         return isValid;
     }
 
@@ -245,11 +232,12 @@ class ContactData extends Component {
         if(this.props.loading) {
             form = <Spinner />;
         }
+
         return (
-            <div className={classes.ContactData}>
-                <h4>Enter your Contact Data</h4>
-            {form}
-            </div>
+                <div className={classes.ContactData}>
+                    <h4>Enter your Contact Data</h4>
+                {form}
+                </div>
         );
     }
 }
@@ -260,7 +248,7 @@ const mapStateToProps = state => {
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
         token: state.auth.token,
-        userId: state.auth.userId
+        userId: state.auth.userId,
     }
 }
 
