@@ -25,8 +25,8 @@ export const purchaseBurgerStart = () => {
 export const purchaseBurger = (orderData, token) => {
     return dispatch => {
         dispatch(purchaseBurgerStart());
+        console.log(orderData);
         axios.post('/order.json?auth=' + token, orderData).then(response => {
-            console.log(response.data);
             dispatch(purchaseBurgerSuccess(response.data.name, orderData));
         }).catch(error => {
            dispatch(purchaseBurgerFail(error))
@@ -65,15 +65,15 @@ export const fetchOrders = (token, userId) => {
         dispatch(fetchOrdersStart());
         const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
         axios.get('/order.json' + queryParams).then(res => {
-            const fetchedOrders = [];
-            // Loop thru obj and distribute new obj with initial key as id
+             let fetchedOrders = [];
+            // // Loop thru obj and distribute new obj with initial key as id
             for (let key in res.data) {
                 fetchedOrders.push({
-                    ...res.data[key],
+                   ...res.data[key],
                     id: key
                 });
             }
-           dispatch(fetchOrdersSuccess(fetchOrders));
+           dispatch(fetchOrdersSuccess(fetchedOrders));
         }).catch(err => {
             dispatch(fetchOrdersFail(err));
         });

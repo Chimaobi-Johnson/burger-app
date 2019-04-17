@@ -42,7 +42,7 @@ class ContactData extends Component {
                 validation: {
                     required: true,
                     minLength: 5,
-                    maxLength: 33
+                    maxLength: 255
                 },
                 inputError: {
                     isEmpty: false,
@@ -82,7 +82,7 @@ class ContactData extends Component {
                 validation: {
                     required: true,
                     minLength: 3,
-                    maxLength: 12
+                    maxLength: 22
                 },
                 inputError: {
                     isEmpty: false,
@@ -102,7 +102,7 @@ class ContactData extends Component {
                 validation: {
                     required: true,
                     minLength: 3,
-                    maxLength: 20
+                    maxLength: 50
                 },
                 inputError: {
                     isEmpty: false,
@@ -147,7 +147,7 @@ class ContactData extends Component {
             orderData: formData,
             userId: this.props.userId
         }
-        console.log(order);
+        // console.log(order);
         this.props.onOrderBurger(order, this.props.token);
     }
 
